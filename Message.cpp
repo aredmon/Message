@@ -9,13 +9,14 @@
 
 // I believe this needs to be set to the number of objects in the MessageData struct.
 // This does not correspond to the size of the struct itself.
-#define SENSORDATA_JSON_SIZE (JSON_OBJECT_SIZE(11))
+#define MESSAGE_DATA_JSON_SIZE (JSON_OBJECT_SIZE(11))
 
 Message::Message( char *jsonString )
 {
-	if( jsonString == 0 )
-		InitializeBlankMessage();
-	else
+	// Intialize a blank message so that if this class is written to JSON, it will be a full message
+	InitializeBlankMessage();
+	// If a JSON string was passed in, fill out the MessageData
+	if( jsonString != 0 )
 		Deserialize( _MessageData, jsonString );
 
 	_JsonString = jsonString;
@@ -24,6 +25,7 @@ Message::Message( char *jsonString )
 void
 Message::InitializeBlankMessage( void )
 {
+	// I don't really know what the default values should be
 	_MessageData._Type = TIME;
 	_MessageData._Method = GET;
 	_MessageData._Hour = 0;
@@ -54,7 +56,7 @@ Message::ToJson( void )
 void
 Message::Serialize( const MessageData &messageData, char *json, short maxSize )
 {
-	StaticJsonBuffer<SENSORDATA_JSON_SIZE> jsonBuffer;
+	StaticJsonBuffer<MESSAGE_DATA_JSON_SIZE> jsonBuffer;
 	JsonObject& root = jsonBuffer.createObject();
 	root["Type"] = messageData._Type;
 	root["Method"] = messageData._Method;
@@ -74,8 +76,10 @@ Message::Serialize( const MessageData &messageData, char *json, short maxSize )
 bool
 Message::Deserialize( MessageData &messageData, char *json )
 {
-	StaticJsonBuffer<SENSORDATA_JSON_SIZE> jsonBuffer;
+	StaticJsonBuffer<MESSAGE_DATA_JSON_SIZE> jsonBuffer;
 	JsonObject& root = jsonBuffer.parseObject(json);
+	// To be honest, these casts here could be bogus. It compiles but, idk if it works.
+	// I may have to set a temp int variable for each, and cast the message data to the int.
 	messageData._Type = (Type)(int)root["Type"];
 	messageData._Method =  (Method)(int)root["Method"];
 	messageData._Hour = root["Hour"];
