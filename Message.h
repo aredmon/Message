@@ -114,7 +114,6 @@ public:
 	bool
 	Deserialize( MessageData &, char * );
 
-private:
 	MessageData _MessageData; /// Member data used to store the contents of a JSON string
 	char * _JsonString; /// Member data used to store a properly formatted JSON string
 
