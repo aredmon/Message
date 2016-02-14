@@ -8,6 +8,9 @@
 #ifndef MESSAGE_H_
 #define MESSAGE_H_
 
+#include <stddef.h>
+
+
 // Max buffer size that is used by the ArduinoJson libraries. I went ahead and just made a static size so that
 // the user of this message library doesn't have to worry about setting one.
 static const short MAX_BUFFER_SIZE = 20;
@@ -100,7 +103,7 @@ public:
 	 * @param short The max buffer size for the JSON library
 	 */
 	void
-	Serialize( const MessageData &, char *, short );
+	Serialize( const MessageData &, char *, size_t );
 
 	/**
 	 * Internal method to the Message class that encapsulates the use of the ArduinoJSON library's ability to

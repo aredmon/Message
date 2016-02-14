@@ -54,7 +54,7 @@ Message::ToJson( void )
 }
 
 void
-Message::Serialize( const MessageData &messageData, char *json, short maxSize )
+Message::Serialize( const MessageData &messageData, char *json, size_t maxSize )
 {
 	StaticJsonBuffer<MESSAGE_DATA_JSON_SIZE> jsonBuffer;
 	JsonObject& root = jsonBuffer.createObject();
